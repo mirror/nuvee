@@ -17,6 +17,7 @@ void LoadConfig_Main()
 		fscanf( fp, "PORT2 = %d\n", &port_type[1] );
 		fscanf( fp, "HIDMOUSE_API = %d\n", &hidmouse_api );
 		fscanf( fp, "Snap mouse = %d\n", &snap_mouse_cursor );
+		fscanf( fp, "Offscreen shot = %d\n", &offscreen_shot );
 
 		fclose( fp );
 	}
@@ -40,6 +41,7 @@ void SaveConfig_Main()
 		fprintf( fp, "PORT2 = %d\n", port_type[1] );
 		fprintf( fp, "HIDMOUSE_API = %d\n", hidmouse_api );
 		fprintf( fp, "Snap mouse = %d\n", snap_mouse_cursor );
+		fprintf( fp, "Offscreen shot = %d\n", offscreen_shot );
 
 		fclose( fp );
 	}
@@ -85,6 +87,11 @@ void GetConfig_Main( HWND hWnd )
 	snap_mouse_cursor = 1;
 	if( IsDlgButtonChecked( hWnd,IDC_MAIN_SNAPMOUSE ) == 0 )
 		snap_mouse_cursor = 0;
+
+
+	offscreen_shot = 1;
+	if( IsDlgButtonChecked( hWnd,IDC_MAIN_OFFSCREEN ) == 1 )
+		offscreen_shot = 0;
 }
 
 

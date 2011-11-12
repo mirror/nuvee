@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by dialog.rc
 //
 #define ID_MOUSE2_OK                    3
@@ -124,6 +124,8 @@
 #define IDC_MOUSE_USB_CONVERTER_HACK    1125
 #define IDC_MAIN_HELP_HIDMOUSE_API      1126
 #define IDC_MAIN_SNAPMOUSE              1127
+#define IDC_MAIN_SNAPMOUSE2             1128
+#define IDC_MAIN_OFFSCREEN              1128
 
 // Next default values for new objects
 // 

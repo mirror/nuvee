@@ -89,7 +89,7 @@ u8 usbdevice[ 0x20000 ];
 
 int usb_logging;
 int lightgun_swap;
-
+int offscreen_shot;
 
 // freeze modes:
 #define FREEZE_LOAD			0
@@ -155,6 +155,8 @@ static int device_absolute[20*2] = { 0,0 };
 // ==================================
 // ==================================
 // ==================================
+
+bool MouseOver(HWND hWnd_app);
 
 int mouse_sensitivity[2] = { 100, 100 };
 int mouse_threshold[2] = { 512, 512 };

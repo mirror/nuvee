@@ -642,7 +642,7 @@ DWORD WINAPI get_guncon_hid_device()
 		while( done == 0 )
 		{
 			// include SysMouse (non-raw devices)
-			for( lcv = raw_mouse_count()-1; lcv >= 0; lcv-- )
+			for( lcv = raw_mouse_count()-1; lcv >= 1; lcv-- )
 			{
 				// check for active device
 				if( is_raw_mouse_button_pressed(lcv,0) ||

@@ -1,3 +1,16 @@
+#define LOG 0
+void write(const char *f, ...) {
+	//static int i = 0; i++;
+	static const int len = 0x2000;
+	char s[len];
+	va_list l;
+	int cnt;
+	va_start(l, f);
+	cnt = vsnprintf(s, len, f, l);
+	va_end(l);
+	OutputDebugStringA(s);
+}
+
 /*
 NOTE: Almost the same behavior as Guncon1
 - Extra C,START,SELECT,D-Pad
@@ -150,6 +163,8 @@ static FILE *fp_guncon_debug = 0;
 
 void Update_Guncon2( int device_port )
 {
+	if(!MouseOver(hWnd_app)) return;
+
 	int reload;
 
 	int data_x, data_y, data_z;
@@ -179,7 +194,6 @@ void Update_Guncon2( int device_port )
 	data_y = device_y[ device_hid[ THIS_PAD ] ];
 	data_z = device_z[ device_hid[ THIS_PAD ] ];
 
-
 	for( int lcv = 0; lcv < NUM_MOUSE_BUTTONS; lcv++ ) {
 		guncon_buttons[ THIS_PAD ][ lcv ] = device_buttons[ device_hid[ THIS_PAD ] ][ lcv ];
 	}
@@ -187,21 +201,19 @@ void Update_Guncon2( int device_port )
 	data_absolute = device_absolute[ device_hid[ THIS_PAD ] ];
 
 
-#if 0
+#if LOG
 	//if( pad_active == 2 )
 	{
 		if( fp_guncon_debug == 0 ) {
 			fp_guncon_debug = fopen( "guncon2-debug.txt", "w" );
 		}
 
-		fprintf( fp_guncon_debug, "(update) (%d)  ||  (x,y) = %d %d  ||  (delta) = %d %d\n",
+		write( "(update) (%d)  ||  (x,y) = %d %d  ||  (delta) = %d %d\n",
 			pad_active,
 			guncon_analog_x[ THIS_PAD ], guncon_analog_y[ THIS_PAD ],
 			data_x, data_y );
 	}
 #endif
-
-
 	// relative mouse
 	if( data_absolute == 0 )
 	{
@@ -244,23 +256,21 @@ void Update_Guncon2( int device_port )
 				fp_guncon_debug = fopen( "guncon2-debug.txt", "w" );
 			}
 
-			fprintf( fp_guncon_debug, "(relative) %d %d || %d %d\n",
+			write( "(relative) %d %d || %d %d\n",
 				guncon_analog_x[ THIS_PAD ], guncon_analog_y[ THIS_PAD ],
 				data_x, data_y );
 		}
 #endif
-
-
-
 		// offscreen shots
-		if( guncon_analog_x[ THIS_PAD ] == 0 || 
+		if( (guncon_analog_x[ THIS_PAD ] == 0 || 
 				guncon_analog_y[ THIS_PAD ] == 0 || 
 				guncon_analog_x[ THIS_PAD ] == gun_right || 
-				guncon_analog_y[ THIS_PAD ] == gun_bottom )
+				guncon_analog_y[ THIS_PAD ] == gun_bottom)
+				&& offscreen_shot )
 		{
 			data_x = 0;
 			data_y = 0;
-		}
+		}		
 		else {
 			// re-adjust center values
 			data_x = guncon_analog_x[ THIS_PAD ] - (gun_width / 2);
@@ -271,7 +281,19 @@ void Update_Guncon2( int device_port )
 			data_x = (data_x * (GUNCON_WIDTH/2) ) / (gun_width / 2);
 			data_y = (data_y * (GUNCON_HEIGHT/2) ) / (gun_height / 2);
 
+			#if LOG
+			{
+				if( fp_guncon_debug == 0 ) {
+					fp_guncon_debug = fopen( "guncon2-debug.txt", "w" );
+				}
 
+				write( "(alignment before) (%d) %d %d || %0.2f %0.2f || %d %d\n",
+					pad_active,
+					data_x, data_y,
+					guncon_scale_x[ THIS_PAD ], guncon_scale_y[ THIS_PAD ],
+					guncon_screen_center_x[ THIS_PAD ], guncon_screen_center_y[ THIS_PAD ] );
+			}
+			#endif
 			// aiming scaling
 			data_x = ( data_x * guncon_scale_x[ THIS_PAD ] ) / 100;
 			data_y = ( data_y * guncon_scale_y[ THIS_PAD ] ) / 100;
@@ -280,6 +302,19 @@ void Update_Guncon2( int device_port )
 			// re-adjust to guncon center
 			data_x += guncon_screen_center_x[ THIS_PAD ];
 			data_y += guncon_screen_center_y[ THIS_PAD ];
+			#if LOG
+			{
+				if( fp_guncon_debug == 0 ) {
+					fp_guncon_debug = fopen( "guncon2-debug.txt", "w" );
+				}
+
+				write( "(alignment after) (%d) %d %d || %0.2f %0.2f || %d %d\n",
+					pad_active,
+					data_x, data_y,
+					guncon_scale_x[ THIS_PAD ], guncon_scale_y[ THIS_PAD ],
+					guncon_screen_center_x[ THIS_PAD ], guncon_screen_center_y[ THIS_PAD ] );
+			}
+			#endif
 
 
 			// special edge check (valid data)
@@ -303,10 +338,10 @@ void Update_Guncon2( int device_port )
 
 
 		// offscreen data
-		if( guncon_analog_x[ THIS_PAD ] == 0 || 
+		if( (guncon_analog_x[ THIS_PAD ] == 0 || 
 				guncon_analog_y[ THIS_PAD ] == 0 || 
 				guncon_analog_x[ THIS_PAD ] == 65535 || 
-				guncon_analog_y[ THIS_PAD ] == 65535 )
+				guncon_analog_y[ THIS_PAD ] == 65535) && offscreen_shot )
 		{
 			data_x = 0;
 			data_y = 0;
@@ -377,13 +412,23 @@ void Update_Guncon2( int device_port )
 				screen_y = (guncon_analog_y[ THIS_PAD ] * 256) / gun_height;
 			}
 		}
+		#if LOG
+		{
+			if( fp_guncon_debug == 0 ) {
+				fp_guncon_debug = fopen( "guncon2-debug.txt", "w" );
+			}
 
+			write( "(alignment screen) (%d)  %d %d\n",
+				pad_active,
+				screen_x, screen_y );
+		}
+		#endif
 
 
 		// clip to GPU cursor coordinates
 		if( screen_x < 0 ) screen_x = 0;
 		if( screen_y < 0 ) screen_y = 0;
-		if( screen_x > 511 ) screen_x = 511;
+		//if( screen_x > 511 ) screen_x = 511;
 		if( screen_y > 255 ) screen_y = 255;
 
 
@@ -401,14 +446,17 @@ void Update_Guncon2( int device_port )
 			int w,h, x,y;
 			RECT r;
 
-
+			static int last_analog_x[512], last_analog_y[512];
 			// skip gun2 cursor if gun1 cursor on (+ mouse)
-			if( pad_active == 2 &&
-					port_type[0] == PAD_TYPE_GUNCON &&
-					port_type[1] == PAD_TYPE_GUNCON &&
-					guncon_cursor[0] == GUNCON_SHOW_CURSOR &&
-					guncon_cursor[1] == GUNCON_SHOW_CURSOR )
-			{}
+			if(
+				//pad_active == 2 &&
+					//port_type[0] == PAD_TYPE_GUNCON &&
+					//port_type[1] == PAD_TYPE_GUNCON &&
+					//guncon_cursor[0] == GUNCON_SHOW_CURSOR &&
+					//guncon_cursor[1] == GUNCON_SHOW_CURSOR && 
+					current_analog_x[ THIS_PAD ] == last_analog_x[THIS_PAD] && current_analog_y[ THIS_PAD ] == last_analog_y[THIS_PAD]
+					)
+			{}			
 			else {
 				// debug - force windows cursor
 				ShowCursor(1);
@@ -423,13 +471,12 @@ void Update_Guncon2( int device_port )
 
 
 					r.top += 0;
-					r.left += 4;
-					r.right -= 4;
-					r.bottom -= 4;
+					r.left += 8;
+					r.right -= 8;
+					r.bottom -= 8;
 				}
 
 				SnapCursor();
-
 
 				w = r.right - r.left;
 				h = r.bottom - r.top;
@@ -438,22 +485,23 @@ void Update_Guncon2( int device_port )
 				y = r.top + h * screen_y / 256;
 
 
-#if 0
+#if LOG
 				//if( pad_active == 2 )
 				{
 					if( fp_guncon_debug == 0 ) {
 						fp_guncon_debug = fopen( "guncon2-debug.txt", "w" );
 					}
 
-					fprintf( fp_guncon_debug, "(win32 cursor) %d %d  ||  %d %d %d %d\n",
+					write( "(win32 cursor) %d %d  ||  %d %d %d %d\n",
 						x,y,
 						r.left, r.top, r.right, r.bottom );
 				}
 #endif
 
-
 				SetCursorPos( x,y );
 			}
+			last_analog_x[THIS_PAD] = current_analog_x[ THIS_PAD ];
+			last_analog_y[THIS_PAD] = current_analog_y[ THIS_PAD ];
 		} // end gpu + win32
 	} // end cursor
 }

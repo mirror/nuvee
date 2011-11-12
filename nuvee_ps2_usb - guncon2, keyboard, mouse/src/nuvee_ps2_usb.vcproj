@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="nuvee_ps2_usb"
 	ProjectGUID="{7EA4F39B-5F88-4AD5-A616-8679AFC90D54}"
+	RootNamespace="nuvee_ps2_usb"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -419,6 +420,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\raw_mouse.h"
+				>
+			</File>
+			<File
 				RelativePath="rawinput.cpp"
 				>
 				<FileConfiguration
@@ -467,16 +472,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-			>
 		</Filter>
 	</Files>
 	<Globals>
