@@ -1,0 +1,65 @@
+; 100410-100800
+; - 100410-1004xx = write guncon hooks
+; - 100600-100800 = guncon pad code
+
+
+
+org $801002b8
+
+j $80100410
+nop
+
+
+
+; copy guncon --> justifier pad code
+lui t0,$8010
+ori t0,t0,$0600
+lui t1,$8002
+ori t1,t1,$2a18
+
+ori t2,r0,$100
+
+
+COPY_CODE1:
+lw a0,$0(t0)
+addi t2,t2,$fffc
+sw a0,$0(t1)
+
+addiu t0,t0,4
+bne t2,r0,COPY_CODE1
+addiu t1,t1,4
+
+
+
+; install jmp hooks
+lui t0,$8002
+
+
+; #1 - guncon data
+lui t1,$0800
+ori t1,t1,$8a86
+sw t1,$2c00(t0)
+sw r0,$2c04(t0)
+
+
+; #2 - offscreen shot
+ori t1,r0,$1000
+sh t1,$2a12(t0)
+
+
+; #3 - guncon detection
+ori t1,r0,$0060
+sh t1,$2860(t0)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+; OLD code
+lw v0,$10(v0)
+nop
+
+j $801002c0
+nop

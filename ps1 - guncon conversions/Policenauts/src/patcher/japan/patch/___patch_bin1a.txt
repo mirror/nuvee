@@ -1,0 +1,14 @@
+; ad8c -> 4bb90
+#40e04
+
+
+
+; gun code 1 - guncon --> d-pad
+$4856c
+1841000800000000
+
+
+
+; gun code 1 - d-pad x-adjust
+$487a4
+00000000

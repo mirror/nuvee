@@ -1,0 +1,169 @@
+; 89a40-89ee0 = remap buttons, id, cursor data
+
+
+
+org $800756b0
+
+j $80089a40
+nop
+
+
+
+; get player address
+lui v1,$8001
+ori v1,v1,$2f00
+
+; ================================
+; ================================
+; ================================
+
+; v1,a1,a3,t0,t8
+; - v1 = guncon data
+; - t8 = temp
+; - a1 = guncon x
+; - a3 = guncon y
+
+; remap guncon ID to justifier
+ori t8,r0,$31
+sb t8,1(v1)
+
+
+
+; force cursor data (guncon x-y)
+lh a1,4(v1)
+lh a3,6(v1)
+;nop
+
+
+
+
+; set valid latch data (1,10 = guncon offscreen normally)
+slti t8,a1,2
+beq t8,r0,REMAP_XY
+ori t8,r0,1
+
+
+; offscreen shot - force (0,0)
+sh r0,4(v1)
+sh r0,6(v1)
+beq r0,r0,REMAP_GUNCON_BUTTONS
+sh r0,8(v1)
+
+
+
+
+REMAP_XY:
+
+; signal on-screen shot
+sb t8,5(v1)
+
+
+; x-axis
+
+; 255 guncon (pSX rough center) --> 256 justifier --> 0 center
+addi a1,a1,$0001
+addi a1,a1,$ff00
+
+; note: 512x240 screen
+
+; adjustment range (pSX 384 --> 512)
+; - 128 / 96 (384 * 128 / 512)
+sll a1,a1,7
+
+lui t8,0x02aa
+ori t8,0xaaaa
+mult a1,t8
+mfhi a1
+
+; 0 center --> 256 justifier
+addi a1,a1,$100
+
+sh a1,8(v1)
+
+
+
+; y-axis
+
+; 135 guncon (pSX rough center) --> 128 justifier --> 0 center
+addi a3,a3,$ffed
+addi a3,a3,$ff80
+
+; adjustment range (pSX 240 --> 256 pal range)
+; - 256 / 240 = 16/15
+sll a3,a3,4
+
+lui t8,0x1111
+ori t8,0x1111
+mult a3,t8
+mfhi a3
+
+; 0 center --> 128+12 justifier
+addi a3,a3,$8c
+
+sh a3,6(v1)
+
+
+
+
+REMAP_GUNCON_BUTTONS:
+
+; remap guncon --> justifier buttons
+
+; $2000 = trigger  -->  $8000 = trigger
+; $0008 = A        -->  $4000 = auxiliary
+; $4000 = B        -->  $0008 = start
+
+lhu a1,2(v1)
+ori a3,r0,$ffff
+
+
+
+; check trigger (low-assert)
+andi t8,a1,$2000
+bne t8,r0,REMAP_A
+nop
+
+; set $8000 bit
+andi a3,a3,$7fff
+
+
+
+REMAP_A:
+; check aux
+andi t8,a1,$0008
+bne t8,r0,REMAP_B
+nop
+
+; set $4000 bit
+andi a3,a3,$bfff
+
+
+
+
+REMAP_B:
+; check start
+andi t8,a1,$4000
+bne t8,r0,REMAP_BUTTONS
+nop
+
+; lower $0008 bit
+andi a3,a3,$fff7
+
+
+
+REMAP_BUTTONS:
+sh a3,2(v1)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+; OLD code
+lui v1,$800c
+lh v1,$9ca8(v1)
+ori v0,r0,3
+
+j $800756bc
+nop

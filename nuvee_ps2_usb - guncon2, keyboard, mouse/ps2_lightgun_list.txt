@@ -1,0 +1,44 @@
+(USB) Guncon 2 compatible
+
+
+IMPORTANT README:
+- At calibration screen, hold trigger offscreen + press SELECT
+
+  change screen: 480i, 480p, 100 Hz
+  ('Progressive Scan' is 480p)
+
+- Progressive scan offers higher precision
+
+
+- Keyboard D-pad mapping:
+W = up
+A = Left
+S = Down
+D = Right
+
+Q = Start
+E = Select
+F = Button C
+
+
+
+(tested)
+- Dino Stalker (U) ---------------------------- 1 guns ------ 480p        // tick "enable fast CDVD", uses D-pad
+- Endgame (U) --------------------------------- 2 guns ------ 480i
+- Gunfighter 2: Jesse James (E) --------------- 2 guns ------ 480i
+- Gunvari Collection (J) ---------------------- 2 guns ------ 480i, 480p
+- Guncom 2 (E) -------------------------------- 2 guns ------ 480i, 480p  // aim a little to left of 'X' for calibration
+- Ninja Assault (E,U) ------------------------- 2 guns ------ 480i, 480p  // aim a little to left of center for calibration
+- Resident Evil Survivor 2 (E) ---------------- 1 guns ------ 480p        // uses D-pad
+- Resident Evil: Dead Aim (U) ----------------- 1 guns ------ 480p        // uses D-pad
+- Starsky and Hutch (U) ----------------------- 1 guns ------ 480i        // options -> controller 2 = g-con 2 (shooting)
+- Time Crisis 2 (U) --------------------------- 2 guns ------ 480i, 480p  // slim ps2 2.2 bios jap + tick "enable fast CDVD" (extra games only)
+- Time Crisis 3 (U) --------------------------- 2 guns ------ 480i, 480p  // slim ps2 2.2 bios jap + tick "enable fast CDVD"
+- Time Crisis: Crisis Zone (U) ---------------- 2 guns ------ 480i, 480p  // (mouse only) autofire gun doesn't work (hazy fog pixel detection)
+- Vampire Night (U) --------------------------- 2 guns ------ 480p
+- Virtua Cop: Elite Edition (E,J) ------------- 2 guns ------ 480i, 480p  // uses D-pad
+
+
+
+(untested)
+- Cocoto: Funfair

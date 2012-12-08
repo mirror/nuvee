@@ -1,0 +1,46 @@
+(tested)
+Area 51 ------------------------------ 2 mice
+Die Hard Trilogy --------------------- 1 mice -------------- menus = plug d-pad into port 2
+Die Hard Trilogy 2 ------------------- 1 mice -------------- port 2
+Elemental Gearbolt ------------------- 2 mice
+Lemmings ----------------------------- 1 mice
+Music 2000 --------------------------- 1 mice
+Policenauts -------------------------- 1 mice
+Project Horned Owl ------------------- 2 mice
+Quake II ----------------------------- 1 mice -------------- port 2
+X-COM: Enemy Unknown ----------------- 1 mice
+X-COM: Terror from Deep -------------- 1 mice
+
+
+
+(untested)
+3D Lemmings
+Alien Resurrection
+Atari Anniversary Edition
+Atlantis: Lost Tales
+Broken Sword 1 & 2
+Clock Tower 1 & 2
+Command and Conquer: Red Alert
+Constructor
+Discworld 1-3
+Dune 2000
+Final Doom
+Galaxian 3
+Ghoul Panic
+Klaymen
+Monopoly
+Puchi Carat
+Railroad Tycoon II
+Rescue Shot
+Risk
+Riven: Sequel to Myst
+RPG Maker
+Sakura Taisen 1 & 2
+Sentinel Returns
+SimCity 2000
+Syndicate Wars
+Warhammer: Dark Omen
+Warzone 2100
+Z
+Wild Arms (options palette?)
+???

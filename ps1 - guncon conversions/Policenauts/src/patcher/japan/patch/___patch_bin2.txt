@@ -1,0 +1,50 @@
+; bin.dpk
+
+; a12a0 -> 87188
+#-1A118
+
+
+
+; act1 - shooting range
+
+; gun code 2a - guncon data
+$87188
+0180023CA402438CA802488C001C03001C0003AE001C0800761C020800000234
+
+
+
+; gun code 2a - hide laser sight (normal)
+$85d60
+ff03023c
+$85d84
+ff03023c
+
+
+
+; gun code 2a - hide laser sight (shot, reload)
+$85c54
+ff03023c
+$85c74
+ff03023c
+
+
+
+; act1 - shooting range
+
+; gun code 2b - game #1 (guncon data)
+$87140
+0180023CA402438CA802488C001C03001C0003AE001C0800811C0208200003AE
+
+
+
+; gun code 2c - act2 highway (guncon data)
+$79f7c
+0180023CA402438C00000000001C03001C0003AEA802438C00000000F5E7010800140300
+
+
+
+; gun code 2c - hide laser sight (normal)
+$79a08
+ff03023c
+$79a2c
+ff03023c

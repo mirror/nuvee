@@ -1,0 +1,13 @@
+org $800176e4
+
+; skip x-math
+j $80017708
+or v0,r0,v1
+
+
+j $8001ab48
+or v0,r0,v1
+
+
+j $8001ad04
+or v0,r0,v1

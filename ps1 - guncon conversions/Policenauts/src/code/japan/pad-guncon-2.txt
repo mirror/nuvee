@@ -1,0 +1,75 @@
+; DEBUG
+; - 102a0-10730
+; - 11220-113d0
+; - 11410-11770
+; - 11DE0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+; gun shooting (bin.dpk) = 48458-48560
+
+org $80048458
+
+
+
+; $102a0 = buttons
+; $102a4 = guncon x
+; $102a8 = guncon y
+; $102ac = unused temp
+
+; - a1,a3,at,v0,t0
+
+lui a1,$8001
+lui at,$8006
+
+; ==========================
+; ==========================
+; ==========================
+
+; update x-y values
+lw v0,$02a4(a1)
+lw t0,$02a8(a1)
+
+; 16.16 fixed-format
+sll v0,v0,16
+sll t0,t0,16
+
+sw v0,$2a58(at)
+sw t0,$2a5c(at)
+
+; ==========================
+; ==========================
+; ==========================
+
+; check trigger pull
+lbu v0,$02a1(a1)
+nop
+xori v0,v0,$ffff
+andi a1,v0,$0c
+
+
+beq a1,r0,NO_TRIGGER
+ori v0,r0,1
+
+
+
+; trigger pull
+sw r0,$2a80(at)
+sw r0,$2a84(at)
+
+beq r0,r0,DONE
+sb v0,$2a55(at)
+
+
+
+NO_TRIGGER:
+ori s1,r0,1
+
+; ==========================
+; ==========================
+; ==========================
+
+DONE:
+j $8004894c
+nop

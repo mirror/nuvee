@@ -1,0 +1,28 @@
+; bin.dpk
+
+; a12a0 -> 87188
+#-1A118
+
+
+
+; act1 - shooting range
+
+; gun code 2a - guncon data
+$87188
+0180023CA402438CA802488C001C03001C0003AE001C0800761C020800000234
+
+
+
+; gun code 2a - hide laser sight (normal)
+$85d60
+ff03023c
+$85d84
+ff03023c
+
+
+
+; gun code 2a - hide laser sight (shot, reload)
+$85c54
+ff03023c
+$85c74
+ff03023c

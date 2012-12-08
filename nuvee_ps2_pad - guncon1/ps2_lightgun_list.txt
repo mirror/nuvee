@@ -1,0 +1,45 @@
+(PAD) Guncon 1 (G-Con 45) compatible
+
+
+(tested)
+- Endgame (U) --------------------------- 2 guns
+- Gunfighter 2: Jesse James (E) --------- 2 guns
+- Ninja Assault (E) --------------------- 2 guns -------- calibration broken = set controller to 'none'
+- Time Crisis 2 (U) --------------------- 2 guns -------- slim ps2 2.2 bios jap and ticked "enable fast CDVD" (play extra games)
+- Time Crisis 3 (E) --------------------- 2 guns
+- Time Crisis Zone (E) ------------------ 2 guns
+- Vampire Night (U,E) ------------------- 2 guns
+
+
+- Resident Evil Survivor 2 (E) ---------- 1 guns -------- during calibration, don't move gun after trigger until told to move
+
+FORWARD = hold trigger off-screen
+BACKWARD = double-tap + hold trigger off-screen
+CHANGE WEAPON = fire offscreen or A+B offscreen
+TURN LEFT = B
+TURN RIGHT = A
+OPTIONS = trigger offscreen + hold A+B immediately
+
+
+
+(not working)
+- (x) Guncom 2 (e) - not detecting ---------- 2 guns
+- (x) Time Crisis 2 (e) - not detecting (??) --- 2 guns
+
+
+
+(untested)
+- Cocoto: Funfair (E)
+- Endgame (E)
+- Dino Stalker (E) (+ pad)
+- Resident Evil: Dead Aim (E) (+ pad)
+- Starsky and Hutch (E) (coop)
+
+###################################################
+###################################################
+###################################################
+###################################################
+
+(PAD) Konami Hyperblaster
+- Police 24/7
+- Silent Hill 3

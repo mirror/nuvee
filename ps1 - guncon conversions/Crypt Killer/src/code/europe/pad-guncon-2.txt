@@ -1,0 +1,15 @@
+org $800176f8
+
+; in-game x-math
+j $8001771c
+or v0,r0,v1
+
+
+; calibration p1
+j $8001a890
+or v0,r0,v1
+
+
+; calibration p2
+j $8001aa4c
+or v0,r0,v1

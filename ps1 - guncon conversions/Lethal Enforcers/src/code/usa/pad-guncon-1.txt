@@ -1,0 +1,206 @@
+; 6b6c0-6bcc0 + 6bce0-6be20 + 6be30-6c050
+; - 6be30-6bexx = remap buttons, id, cursor data
+
+
+
+org $8006be28
+
+j $8006be30
+nop
+
+
+
+or at,ra,r0
+
+
+; player 1
+lui v0,$8006
+jal REMAP_GUNCON
+ori v0,$d038
+
+; player 2
+lui v0,$8006
+jal REMAP_GUNCON
+ori v0,$d08e
+
+
+or ra,at,r0
+
+
+
+; unlatch dead gun - only 1 active at time
+lbu v0,$74(gp)
+lui v1,$8006+1
+
+bne v0,r0,DEAD_GUN2
+nop
+
+; gun 1 active - shut down 2
+beq r0,r0,TOTAL_DONE
+sb r0,$d093(v1)
+
+; gun 2 active - shut down 1
+DEAD_GUN2:
+sb r0,$d03d(v1)
+
+
+
+TOTAL_DONE:
+
+; OLD code
+lw a0, $6c4(gp)
+nop
+j $8003694c
+nop
+
+; =======================================
+; =======================================
+; =======================================
+
+; at, s0, a0, v0, v1, (s1)
+; - v0 = guncon data
+; - at = jal return
+; - s0,a0,v1
+
+REMAP_GUNCON:
+
+; remap guncon ID to justifier
+ori s0,r0,$31
+sb s0,1(v0)
+
+
+
+; force cursor data (guncon x-y)
+lh s0,4(v0)
+lh v1,6(v0)
+;nop
+
+
+
+
+; set valid latch data (1,10 = guncon offscreen normally)
+slti a0,s0,2
+beq a0,r0,REMAP_XY
+ori a0,r0,1
+
+
+; offscreen shot - force (0,0)
+sh r0,4(v0)
+sh r0,6(v0)
+beq r0,r0,REMAP_GUNCON_BUTTONS
+sh r0,8(v0)
+
+
+
+
+REMAP_XY:
+
+; signal on-screen shot
+sb a0,5(v0)
+
+
+; x-axis
+
+; 255 guncon (pSX rough center) --> 160 justifier --> 0 center
+addi s0,s0,$ffa1
+addi s0,s0,$ff60
+
+
+
+; adjustment range (pSX 384 --> 320)
+; - 80 / 96 (384 * 128 / 320) ===> x * (64+16) / 96
+sll a0,s0,6
+sll s0,s0,4
+add s0,s0,a0
+
+lui a0,0x02aa
+ori a0,0xaaaa
+mult s0,a0
+mfhi s0
+
+; 0 center --> 160 justifier
+addi s0,s0,$a0
+
+sh s0,8(v0)
+
+
+
+; y-axis
+
+; 136 guncon (pSX rough center) --> 120 justifier --> 0 center
+addi v1,v1,$fff0
+;addi v1,v1,$ff88
+
+; no adjustment range (pSX 240 --> 240 range)
+;lui at,0x7800
+;ori at,0x0000
+;mult s1,at
+;mfhi s1
+
+; 0 center --> 120 justifier
+;addi s1,s1,$78
+
+sh v1,6(v0)
+
+
+
+
+REMAP_GUNCON_BUTTONS:
+
+; remap guncon --> justifier buttons
+
+; $2000 = trigger  -->  $8000 = trigger
+; $0008 = A        -->  $4000 = auxiliary
+; $4000 = B        -->  $0008 = start
+
+; at,a0,ra
+
+lhu s0,2(v0)
+ori a0,r0,$ffff
+
+
+
+; check trigger (low-assert)
+andi v1,s0,$2000
+bne v1,r0,REMAP_A
+nop
+
+; set $8000 bit
+andi a0,a0,$7fff
+
+
+
+REMAP_A:
+; check aux
+andi v1,s0,$0008
+bne v1,r0,REMAP_B
+nop
+
+; set $4000 bit
+andi a0,a0,$bfff
+
+
+
+
+REMAP_B:
+; check start
+andi v1,s0,$4000
+bne v1,r0,REMAP_BUTTONS
+nop
+
+; lower $0008 bit
+andi a0,a0,$fff7
+
+
+
+REMAP_BUTTONS:
+sh a0,2(v0)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+jr ra
+nop

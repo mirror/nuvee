@@ -1,0 +1,119 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by dialog.rc
+//
+#define ID_MOUSE2_OK                    3
+#define ID_MOUSE2_CANCEL                4
+#define IDD_MAIN                        101
+#define IDD_MOUSE1                      102
+#define IDD_MOUSE                       102
+#define IDD_MOUSE2                      103
+#define IDD_GUNCON1                     104
+#define IDD_GUNCON                      104
+#define IDD_GUNCON2                     105
+#define IDC_MAIN_PORT1_CONTROLLER       1000
+#define IDC_MAIN_PORT2_CONTROLLER       1001
+#define IDC_MAIN_PORT1_CONFIG           1002
+#define IDC_MAIN_PORT2_CONFIG           1003
+#define IDC_MOUSE1_SENSITIVITY          1003
+#define IDC_MOUSE_SENSITIVITY           1003
+#define IDC_MOUSE1_THRESHOLD            1004
+#define IDC_MOUSE_THRESHOLD             1004
+#define IDC_MAIN_HIDMOUSE_API           1004
+#define IDC_MOUSE1_DEADZONE             1005
+#define IDC_MOUSE_DEADZONE              1005
+#define IDC_MOUSE1_HELP1                1006
+#define IDC_MOUSE_HELP1                 1006
+#define IDC_MOUSE2_SENSITIVITY          1007
+#define IDC_MOUSE2_HELP2                1008
+#define IDC_MOUSE2_HELP3                1009
+#define IDC_MOUSE2_THRESHOLD            1010
+#define IDC_MOUSE2_DEADZONE             1011
+#define ID_MOUSE1_OK                    1012
+#define ID_MOUSE_OK                     1012
+#define ID_MOUSE1_CANCEL                1013
+#define ID_MOUSE_CANCEL                 1013
+#define IDC_MOUSE1_HELP2                1014
+#define IDC_MOUSE_HELP2                 1014
+#define IDC_MOUSE1_HELP3                1015
+#define IDC_MOUSE_HELP3                 1015
+#define IDC_MOUSE2_HELP1                1016
+#define ID_MAIN_CANCEL                  1017
+#define IDC_GUNCON1_HELP4               1017
+#define IDC_GUNCON_HELP4                1017
+#define ID_MAIN_OK                      1018
+#define IDC_GUNCON1_HELP5               1018
+#define IDC_GUNCON_HELP_ALIGNMENT       1018
+#define IDC_GUNCON1_LEFT                1019
+#define IDC_GUNCON_LEFT                 1019
+#define IDC_GUNCON1_RIGHT               1020
+#define IDC_GUNCON_RIGHT                1020
+#define IDC_GUNCON1_MIDDLE              1021
+#define IDC_GUNCON_MIDDLE               1021
+#define IDC_GUNCON1_HELP6               1022
+#define IDC_GUNCON_HELP6                1022
+#define IDC_GUNCON_HELP_MODEL           1023
+#define IDC_GUNCON1_RELOAD              1024
+#define IDC_GUNCON_RELOAD               1024
+#define IDC_GUNCON1_SENSITIVITY         1025
+#define IDC_GUNCON_SENSITIVITY          1025
+#define IDC_GUNCON1_THRESHOLD           1026
+#define IDC_GUNCON_THRESHOLD            1026
+#define IDC_GUNCON1_DEADZONE            1027
+#define IDC_GUNCON_DEADZONE             1027
+#define IDC_GUNCON1_HELP1               1028
+#define IDC_GUNCON_HELP1                1028
+#define IDC_GUNCON1_HELP2               1029
+#define IDC_GUNCON_HELP2                1029
+#define IDC_GUNCON1_HELP3               1030
+#define IDC_GUNCON_HELP3                1030
+#define IDC_GUNCON1_CALIBRATION         1031
+#define IDC_GUNCON_ALIGNMENT            1031
+#define IDC_GUNCON1_CURSOR              1032
+#define IDC_GUNCON_CURSOR               1032
+#define IDC_GUNCON_MODEL                1033
+#define IDC_GUNCON_EDIT_PROFILES        1034
+#define IDC_GUNCON_HELP_CALIBRATION_HACK 1035
+#define IDC_GUNCON_DEFAULT_PROFILES     1036
+#define IDC_GUNCON_AUX1                 1039
+#define IDC_GUNCON_AUX2                 1040
+#define ID_GUNCON2_OK                   1041
+#define IDC_GUNCON_WHEELUP              1041
+#define ID_GUNCON2_CANCEL               1042
+#define IDC_GUNCON_WHEELDOWN            1042
+#define ID_GUNCON1_CANCEL               1043
+#define ID_GUNCON_CANCEL                1043
+#define ID_GUNCON1_OK                   1044
+#define ID_GUNCON_OK                    1044
+#define IDC_GUNCON1_ACQUIRE             1050
+#define IDC_GUNCON_ACQUIRE              1050
+#define IDC_MOUSE1_ACQUIRE              1052
+#define IDC_MOUSE_ACQUIRE               1052
+#define IDC_MOUSE2_ACQUIRE              1053
+#define IDC_GUNCON1_SCREEN_X            1054
+#define IDC_GUNCON_LIGHTGUN_TOP         1054
+#define IDC_GUNCON1_SCREEN_Y            1055
+#define IDC_GUNCON_LIGHTGUN_LEFT        1055
+#define IDC_GUNCON_LIGHTGUN_RIGHT       1056
+#define IDC_GUNCON_LIGHTGUN_BOTTOM      1057
+#define IDC_GUNCON_AIMING_X             1096
+#define IDC_GUNCON_AIMING_Y             1097
+#define IDC_GUNCON_CALIBRATION_HACK     1098
+#define IDC_GUNCON_KEYBOARD_DPAD        1099
+#define IDC_GUNCON_START_HOTKEY         1100
+#define IDC_MAIN_USB_LOGGING            1100
+#define IDC_MAIN_SWAP_GUNS              1101
+#define IDC_MAIN_RECONNECT              1102
+#define IDC_MAIN_SNAPMOUSE              1103
+#define IDC_MAIN_HELP_HIDMOUSE_API      1126
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        107
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1102
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

@@ -1,0 +1,19 @@
+; bin.dpk
+
+
+; f0c70 -> 92284
+#-5e9ec
+
+
+; act5 - mass driver
+; gun code 2d - guncon data
+$92284
+0180023CA402438C00000000001C03001C0003AEA802438C00000000B748020800140300
+
+
+
+; gun code 2d - hide laser sight (normal)
+$91dcc
+ff03023c
+$91df0
+ff03023c

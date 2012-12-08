@@ -1,0 +1,196 @@
+; 2ff80-30320
+; - 30200-30320 = remap buttons, id, cursor data
+
+
+
+org $800301f8
+
+j $80030200
+nop
+
+
+
+lui v0,$800e
+ori v0,$5b56
+
+; =======================================
+; =======================================
+; =======================================
+
+; at, a0, s2, v0, v1,s3,s4
+; - v0 = guncon data
+; - at = temp
+; - s2 = guncon x
+; - v1 = guncon y
+
+
+REMAP_GUNCON:
+
+; remap guncon ID to justifier
+ori at,r0,$31
+sb at,1(v0)
+
+
+
+; force cursor data (guncon x-y)
+lh s2,4(v0)
+lh v1,6(v0)
+;nop
+
+
+
+
+; set valid latch data (1,10 = guncon offscreen normally)
+; - 0 = onscreen, 1 = offscreen
+slti at,s2,2
+beq at,r0,REMAP_XY
+ori at,r0,1
+
+
+; offscreen shot - force (0,0)
+sh r0,4(v0)
+sh r0,6(v0)
+beq r0,r0,REMAP_GUNCON_BUTTONS
+sh r0,8(v0)
+
+
+
+
+REMAP_XY:
+
+; signal on-screen shot
+sb at,5(v0)
+
+
+
+
+; x-axis
+
+; 255 guncon (pSX rough center) --> 160 justifier --> 0 center
+addi s2,s2,$ffa1
+;addi s2,s2,$ff60
+addi s2,s2,$ff9d
+
+
+
+; adjustment range (pSX 384 --> 320)
+; - 80 / 96 (384 * 128 / 320) ===> x * (64+16) / 96
+sll at,s2,6
+sll s2,s2,4
+add s2,s2,at
+
+lui at,0x02aa
+ori at,0xaaaa
+mult s2,at
+mfhi s2
+
+; 0 center --> 160+157 justifier
+;addi s2,s2,$13d
+addi s2,s2,$100
+
+sh s2,8(v0)
+
+
+
+; y-axis
+
+; 136 guncon (pSX rough center) --> 120 justifier --> 0 center
+addi v1,v1,$fff0
+addi v1,v1,$ff93
+
+; no adjustment range (pSX 240 --> 240 range)
+;lui at,0x7800
+;ori at,0x0000
+;mult s1,at
+;mfhi s1
+
+; 0 center --> 120+12 justifier
+addi v1,v1,$88
+
+sh v1,6(v0)
+
+
+
+
+; stage 12 special calibration
+lui a0,$800b+1
+lw a0,$da7c(a0)
+lui at,$5032
+ori at,at,$316c
+
+bne a0,at,REMAP_GUNCON_BUTTONS
+nop
+
+
+; change xy centering
+addi s2,s2,$04
+sh s2,8(v0)
+addi v1,v1,$04
+sh v1,6(v0)
+
+
+
+
+REMAP_GUNCON_BUTTONS:
+
+; remap guncon --> justifier buttons
+
+; $2000 = trigger  -->  $8000 = trigger
+; $0008 = A        -->  $4000 = auxiliary
+; $4000 = B        -->  $0008 = start
+
+; at,a0,ra
+
+lhu s2,2(v0)
+ori a0,r0,$ffff
+
+
+
+; check trigger (low-assert)
+andi v1,s2,$2000
+bne v1,r0,REMAP_A
+nop
+
+; set $8000 bit
+andi a0,a0,$7fff
+
+
+
+REMAP_A:
+; check aux
+andi v1,s2,$0008
+bne v1,r0,REMAP_B
+nop
+
+; set $4000 bit
+andi a0,a0,$bfff
+
+
+
+
+REMAP_B:
+; check start
+andi v1,s2,$4000
+bne v1,r0,REMAP_BUTTONS
+nop
+
+; lower $0008 bit
+andi a0,a0,$fff7
+
+
+
+
+REMAP_BUTTONS:
+sh a0,2(v0)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+; OLD code
+ori v0,r0,4
+j $80037c7c
+lui at,$800f
+

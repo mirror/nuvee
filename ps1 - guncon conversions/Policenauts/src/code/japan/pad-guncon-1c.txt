@@ -1,0 +1,62 @@
+; DEBUG
+; - 102a0-10730
+;   102a0-102b0 = guncon data
+;   102b0-103b0 = guncon remap
+;   103b0-103e0 = guncon / mouse button shared
+;   103e0-10410 = mouse hooks
+;   10410-104xx = mouse hooks
+
+; - 11220-113d0
+; - 11410-11770
+; - 11DE0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+; gun shooting (bin.dpk) = 48458-48560
+
+org $800049d8
+
+j $80010410
+nop
+
+
+
+; $102a0 = buttons
+; $102a4 = guncon x
+; $102a8 = guncon y
+; $102ac = unused temp ($0a init)
+
+; ra,a0 free
+
+; check mouse init
+lui ra,$8001
+lbu a0,$02ac(ra)
+nop
+beq a0,r0,DONE
+;nop
+
+
+
+; 1-time mouse init
+sb r0,$02ac(ra)
+
+; mouse ID
+lui ra,$8003+1
+ori a0,r0,$12
+sb a0,$f939(ra)
+
+ori a0,r0,$fcff
+sh a0,$f93a(ra)
+sh r0,$f93c(ra)
+
+; ========================
+; ========================
+; ========================
+
+DONE:
+jal $4498
+addiu a0,r0,1
+
+j $49e0
+nop

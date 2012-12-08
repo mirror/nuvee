@@ -1,0 +1,50 @@
+Main author: paubi
+
+
+Guncon model
+- H = homebrew (preferred option)
+- C = custom
+- U = unlicensed
+
+----------GUNCON
+---NAME-------------------- PLAYERS-------TYPE------GUNCON MODEL---AIMING STATUS-----COMENTS
+Die Hard 2 --------1(Plugged in port2)----rails---------H-------------OK
+Elemental Gearbolt ------------2----------rails---------H-------------OK
+Extreme Ghostbusters ----------2----------rails---------H-------------OK--------(START=A+B)
+Game Paradise 2 ---1(Plugged in port2)---protect?-------U-------------OK--------Calibrate at pig's nose for perfect
+Ghoul Panic -------------------2---------gallery--------H-------------OK
+Gunfighter --------------------1----------rails---------H-------------OK
+Judge Dredd -------------------2----------rails---------H-------------OK--------Must use gpuBladeSoft for calibration, random PCSX-r freeze buggy
+Maximum Force -----------------2----------rails---------H-------------OK
+Mighty Hits -------------------2---------gallery--------U-------------OK
+Moorhuhn 2 --------------------2---------hunting--------H-------------OK
+Moorhuhn 3 --------------------2---------hunting--------H-------------OK
+Moorhuhn X --------------------2---------hunting--------H-------------OK
+Point Blank 1 -----------------2---------gallery--------H-------------OK
+Point Blank 2 -----------------2---------gallery--------H-------------OK
+Point Blank 3 -----------------2---------gallery--------H-------------OK
+RE Survivor -------------------1-------1st person-------H-------------OK--------Recalibrate gun again in-game
+Rescue Shot -------------------2---------protect--------H-------------OK
+Simple 1500 gunshooting 1 -----2---------gallery--------H-------------OK
+Simple 1500 gunshooting 2 -----2---------gallery--------H-------------OK
+Time Crisis -------------------1----------rails---------H-------------OK
+Time Crisis Project Titan -----1----------rails---------H-------------OK
+
+--DONT TESTED
+Guntu Western Front June ------1?---------rails-------------?
+Serofans ----------------------1?--------gallery------------?
+
+
+
+----------JUSTIFIER
+Area 51 -----------------------2-----------rails
+Crypt Killer ------------------2-----------rails----------- aka Henry Explorers
+Die Hard 1 --------------------1-----------rails----------- hold trigger + aux to fire rockets
+Die Hard 2 -------1(Plugged in port2)------rails
+Elemental Gearbolt ------------2-----------rails
+Judge Dredd -------------------2-----------rails
+Lethal Enforcers --------------2-----------rails
+Maximum Force -----------------2-----------rails
+Project Horned Owl ------------2-----------rails
+Rebel Assault 2 --1(Plugged in port2)------rails-----------gun stages only
+

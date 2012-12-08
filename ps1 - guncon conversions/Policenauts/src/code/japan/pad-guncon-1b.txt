@@ -1,0 +1,50 @@
+; DEBUG
+; - 102a0-10730
+;   102a0-102b0 = guncon data
+;   102b0-103b0 = guncon remap
+;   103b0-103e0 = guncon / mouse button shared
+;   103e0-104xx = mouse hooks
+
+; - 11220-113d0
+; - 11410-11770
+; - 11DE0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+; gun shooting (bin.dpk) = 48458-48560
+
+org $80023520
+
+j $800103e0
+nop
+
+
+
+
+; at,v0 = free
+
+
+; install input driver hook (from BIOS code)
+lui at,0
+lui v0,$0800
+ori v0,v0,$40ac
+sw v0,$49e0(at)
+sw r0,$49e4(at)
+
+
+
+; install 1-time mouse driver hook (from BIOS code)
+lui v0,$0800
+ori v0,v0,$4104
+sw v0,$49d8(at)
+sw r0,$49dc(at)
+
+; ========================
+; ========================
+; ========================
+
+DONE:
+lui at,$8004
+j $80023528
+addiu at,at,$f939

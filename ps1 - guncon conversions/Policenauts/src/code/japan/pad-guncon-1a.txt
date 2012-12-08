@@ -1,0 +1,45 @@
+; DEBUG
+; - 102a0-10730
+;   102a0-102b0 = guncon data
+;   102b0-103b0 = guncon remap
+;   103b0-104xx = guncon / mouse button shared
+
+; - 11220-113d0
+; - 11410-11770
+; - 11DE0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+
+org $80023584
+
+j $800103b0
+nop
+
+
+
+; combine mouse buttons to 'super' data
+; - at = current port
+; - v1,t3 = free
+
+; ignore port2 data
+lui t3,$8003
+ori t3,t3,$f939
+bne t3,at,DONE
+nop
+
+
+sb v0,3(a2)
+
+; ==========================
+; ==========================
+; ==========================
+
+DONE:
+lw a0,4(a2)
+nop
+
+j $8002358c
+nop
+

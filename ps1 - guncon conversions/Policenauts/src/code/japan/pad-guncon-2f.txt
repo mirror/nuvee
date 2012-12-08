@@ -1,0 +1,39 @@
+; DEBUG
+; - 102a0-10730
+; - 11220-113d0
+; - 11410-11770
+; - 11de0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+; act7 - garage (bin.dpk)
+
+org $80091c98
+
+
+
+; $102a0 = buttons
+; $102a4 = guncon x
+; $102a8 = guncon y
+; $102ac = unused temp
+
+
+
+; load x-cursor
+lui v0,$8001
+lw v1,$02a4(v0)
+nop
+
+; adjust 16.16 format
+sll v1,v1,16
+sw v1,$1c(s0)
+
+
+
+; load y-cursor
+lw v1,$02a8(v0)
+nop
+
+j $80091cf0
+sll v0,v1,16

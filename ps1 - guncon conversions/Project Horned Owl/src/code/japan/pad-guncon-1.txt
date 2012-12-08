@@ -1,0 +1,133 @@
+; 22a18-22bxx
+; - 22a18-22bxx = remap buttons, id, cursor data
+
+
+
+org $80022c00
+
+j $80022a18
+nop
+
+
+
+; get player address
+lw v0,$4fc(gp)
+;nop
+
+; ================================
+; ================================
+; ================================
+
+; remap guncon ID to justifier
+ori s0,r0,$30
+sb s0,0(at)
+
+
+
+
+;80022ad4 : 3410007F  ORI     ffffffff (s0), 00000000 (r0), 007f (127),
+;80022ad8 : 341101FF  ORI     00000001 (s1), 00000000 (r0), 01ff (511),
+
+; force cursor data (guncon x-y)
+lh s0,4(v0)
+lh s1,6(v0)
+;nop
+
+
+; x-axis
+
+; 256 guncon (pSX rough center) --> 129 justifier --> 0 center
+addi s0,s0,$ff80
+addi s0,s0,$ff7f
+
+; 1.48333333333333 adjustment range (pSX 356 --> 240)
+; - 89 / 60 ===> x * (64-4) / 89
+sll at,s0,2
+sll s0,s0,6
+sub s0,s0,at
+
+lui at,0x02e0
+ori at,0x5c0b
+mult s0,at
+mfhi s0
+
+; 0 center --> 129 justifier
+addi s0,s0,$81
+
+
+
+; y-axis
+
+; 136 guncon (pSX rough center) --> 120 justifier --> 0 center
+addi s1,s1,$fff0
+;addi s1,s1,$ff88
+
+; no adjustment range (pSX 240 --> 240 range)
+;lui at,0x7800
+;ori at,0x0000
+;mult s1,at
+;mfhi s1
+
+; 0 center --> 120 justifier
+;addi s1,s1,$78
+
+
+
+
+; remap guncon --> justifier buttons
+
+; $2000 = trigger  -->  $8000 = trigger
+; $0008 = A        -->  $4000 = auxiliary
+; $4000 = B        -->  $0008 = start
+
+; at,a0,ra
+
+lhu at,2(v0)
+ori a0,r0,$ffff
+
+
+
+; check trigger (low-assert)
+andi v1,at,$2000
+bne v1,r0,REMAP_A
+nop
+
+; set $8000 bit
+andi a0,a0,$7fff
+
+
+
+REMAP_A:
+; check aux
+andi v1,at,$0008
+bne v1,r0,REMAP_B
+nop
+
+; set $4000 bit
+andi a0,a0,$bfff
+
+
+
+
+REMAP_B:
+; check start
+andi v1,at,$4000
+bne v1,r0,REMAP_BUTTONS
+nop
+
+; lower $0008 bit
+andi a0,a0,$fff7
+
+
+
+REMAP_BUTTONS:
+sh a0,2(v0)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+j $80022c08
+nop

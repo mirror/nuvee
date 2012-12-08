@@ -1,0 +1,95 @@
+; DEBUG
+; - 102a0-10730
+;   102a0-102b0 = guncon data
+;   102b0-103b0 = guncon remap
+;   103b0-103e0 = guncon / mouse button shared
+;   103e0-10410 = mouse hooks
+;   10410-10460 = mouse hooks
+;   10460-104xx = guncon - dpad remap
+
+; - 11220-113d0
+; - 11410-11770
+; - 11DE0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+; gun shooting (bin.dpk)
+; - guncon -> dpad
+
+org $8004856c
+
+j $80010460
+nop
+
+
+
+; $102a0 = buttons
+; $102a4 = guncon x
+; $102a8 = guncon y
+; $102ac = unused temp
+
+; - t0,at,a2,v0
+
+; check $3f938 = mouse, then skip
+lui a2,$8003+1
+lbu at,$f939(a2)
+ori v0,r0,$12
+beq v0,at,DONE
+;nop
+
+; ==========================
+; ==========================
+; ==========================
+
+lui a2,$8001
+lui at,$8006
+
+
+; update x-y values
+lw v0,$02a4(a2)
+lw t0,$02a8(a2)
+
+; 16.16 fixed-format
+sll v0,v0,16
+sll t0,t0,16
+
+sw v0,$2a58(at)
+sw t0,$2a5c(at)
+
+; ==========================
+; ==========================
+; ==========================
+
+; compare changed data
+lbu v0,$02a1(a2)
+lbu t0,$02a2(a2)
+nop
+sb v0,$02a2(a2)
+xori v0,v0,$ff
+xori t0,t0,$ff
+xor t0,t0,v0
+and t0,t0,v0
+
+
+
+; check trigger pull
+andi t0,t0,$0c
+beq t0,r0,DONE
+;nop
+
+
+; signal gunshot
+ori t0,r0,$0080
+sh t0,$2208(at)
+
+; ==========================
+; ==========================
+; ==========================
+
+DONE:
+lui t0,$8006
+lhu t0,$2a4e(t0)
+
+j $80048574
+nop

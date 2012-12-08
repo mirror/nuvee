@@ -1,0 +1,28 @@
+NOTE:
+Real games may support 2 keyboards but
+nuvee only uses 1 system device
+
+
+
+(tested)
+- Dirge of Cerberus - Final Fantasy VII -------- 1 keyboard
+- Unreal Tournament ---------------------------- 2 keyboards -------- set in controller options
+
+
+
+
+
+(untested)
+Deus Ex
+Everquest
+Half-Life
+Final Fantasy XI
+Monster Hunter
+RPG Maker II
+Red Faction 2
+Resident Evil Outbreak (online only?)
+Socom
+Socom 2 (online only?)
+Soldier of Fortune
+Star Trek Elite Force
+Typing of the Dead: Zombie Panic

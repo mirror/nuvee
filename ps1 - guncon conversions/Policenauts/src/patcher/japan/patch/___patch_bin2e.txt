@@ -1,0 +1,20 @@
+; bin.dpk
+
+
+; d0980 --> 92794
+#-3E1EC
+
+
+; act7 - lobby
+
+; gun code 2e- guncon data
+$92794
+0180023CA402438C00000000001C03001C0003AEA802438C00000000FB49020800140300
+
+
+
+; gun code 2e - hide laser sight (normal)
+$922c4
+ff03023c
+$922e8
+ff03023c

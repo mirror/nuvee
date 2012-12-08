@@ -1,0 +1,20 @@
+; bin.dpk
+
+
+; 105e84 -> 91c98
+#-741ec
+
+
+; act7 - garage
+
+; gun code 2f - guncon data
+$91c98
+0180023CA402438C00000000001C03001C0003AEA802438C000000003C47020800140300
+
+
+
+; gun code 2f - hide laser sight (normal)
+$917cc
+ff03023c
+$917f0
+ff03023c

@@ -1,0 +1,33 @@
+LIBRARY      "nuvee_ps2_usb"
+DESCRIPTION  "nuvee PS2 USB"
+
+EXPORTS
+	PS2EgetLibType
+	PS2EgetLibName
+	PS2EgetLibVersion2
+
+	USBinit
+	USBshutdown
+	USBopen
+	USBclose
+
+	USBread8
+	USBread16
+	USBread32
+	USBwrite8
+	USBwrite16
+	USBwrite32
+	USBirqCallback
+	USBirqHandler
+	USBsetRAM
+	USBfreeze
+
+	USBconfigure
+	USBtest
+	USBabout
+
+	USBregisterCursor
+	USBcmdline
+
+	USBsetSettingsDir
+	USBsetLogDir

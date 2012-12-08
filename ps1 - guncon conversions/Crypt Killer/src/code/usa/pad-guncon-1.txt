@@ -1,0 +1,253 @@
+; 45720-45b10
+; - 45880-45axx = remap buttons, id, cursor data
+
+
+
+org $80045878
+
+j $80045880
+nop
+
+
+
+lui v0,$800e
+jal REMAP_GUNCON
+ori v0,$4c24
+
+
+; remap latch data
+lbu at,5(v0)
+lui a0,$8002
+sb at,$2160(a0)
+
+; remap xy data (game)
+lhu at,8(v0)
+lui a0,$800e
+lhu v1,6(v0)
+sh at,$4c08(a0)
+sh v1,$4c10(a0)
+
+; remap xy data (stage)
+lhu at,8(v0)
+lui a0,$800b+1
+lhu v1,6(v0)
+
+addi at,at,$ff60
+sw at,$9da0(a0)
+addi v1,v1,$ff88
+sw v1,$9da8(a0)
+
+
+
+
+
+; player 2
+lui v0,$800e
+jal REMAP_GUNCON
+ori v0,$4c46
+
+
+; remap latch data
+lbu at,5(v0)
+lui a0,$8002
+sb at,$2161(a0)
+
+; remap xy data (game)
+lhu at,8(v0)
+lui a0,$800e
+lhu v1,6(v0)
+sh at,$4c0c(a0)
+sh v1,$4c14(a0)
+
+; remap xy data (stage)
+lhu at,8(v0)
+lui a0,$800b+1
+lhu v1,6(v0)
+
+addi at,at,$ff60
+sw at,$9da4(a0)
+addi v1,v1,$ff88
+sw v1,$9dac(a0)
+
+
+
+
+
+; OLD code
+lw t1,$18(sp)
+nop
+j $800517a4
+nop
+
+; =======================================
+; =======================================
+; =======================================
+
+; at, a0, s0, v0, v1
+; - v0 = guncon data
+; - at = temp
+; - s0 = guncon x
+; - v1 = guncon x
+
+
+REMAP_GUNCON:
+
+; check guncon ID first
+lbu at,1(v0)
+ori s0,r0,$63
+bne at,s0,DONE
+nop
+
+
+
+; remap guncon ID to justifier
+ori at,r0,$31
+sb at,1(v0)
+
+
+
+; force cursor data (guncon x-y)
+lh s0,4(v0)
+lh v1,6(v0)
+;nop
+
+
+
+
+; set valid latch data (1,10 = guncon offscreen normally)
+; - 0 = onscreen, 1 = offscreen
+slti at,s0,2
+beq at,r0,REMAP_XY
+ori at,r0,1
+
+
+; offscreen shot - force (0,0)
+;sh r0,4(v0)
+
+; 1 = offscreen (Crypt)
+sb at,5(v0)
+
+sh r0,6(v0)
+beq r0,r0,REMAP_GUNCON_BUTTONS
+sh r0,8(v0)
+
+
+
+
+REMAP_XY:
+
+; signal on-screen shot
+;sb at,5(v0)
+
+; 0 = offscreen (Crypt)
+sb r0,5(v0)
+
+
+
+
+; x-axis
+
+; 255 guncon (pSX rough center) --> 160 justifier --> 0 center
+addi s0,s0,$ffa1
+addi s0,s0,$ff60
+
+
+
+; adjustment range (pSX 384 --> 320)
+; - 80 / 96 (384 * 128 / 320) ===> x * (64+16) / 96
+sll at,s0,6
+sll s0,s0,4
+add s0,s0,at
+
+lui at,0x02aa
+ori at,0xaaaa
+mult s0,at
+mfhi s0
+
+; 0 center --> 158 justifier
+addi s0,s0,$9e
+
+sh s0,8(v0)
+
+
+
+; y-axis
+
+; 136 guncon (pSX rough center) --> 120 justifier --> 0 center
+addi v1,v1,$fff0
+;addi v1,v1,$ff88
+
+; no adjustment range (pSX 240 --> 240 range)
+;lui at,0x7800
+;ori at,0x0000
+;mult s1,at
+;mfhi s1
+
+; 0 center --> 120 justifier
+;addi v1,v1,$78
+
+sh v1,6(v0)
+
+
+
+
+REMAP_GUNCON_BUTTONS:
+
+; remap guncon --> justifier buttons
+
+; $2000 = trigger  -->  $8000 = trigger
+; $0008 = A        -->  $4000 = auxiliary
+; $4000 = B        -->  $0008 = start
+
+; at,a0,ra
+
+lhu s0,2(v0)
+ori a0,r0,$ffff
+
+
+
+; check trigger (low-assert)
+andi v1,s0,$2000
+bne v1,r0,REMAP_A
+nop
+
+; set $8000 bit
+andi a0,a0,$7fff
+
+
+
+REMAP_A:
+; check aux
+andi v1,s0,$0008
+bne v1,r0,REMAP_B
+nop
+
+; set $4000 bit
+andi a0,a0,$bfff
+
+
+
+
+REMAP_B:
+; check start
+andi v1,s0,$4000
+bne v1,r0,REMAP_BUTTONS
+nop
+
+; lower $0008 bit
+andi a0,a0,$fff7
+
+
+
+
+REMAP_BUTTONS:
+sh a0,2(v0)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+jr ra
+nop

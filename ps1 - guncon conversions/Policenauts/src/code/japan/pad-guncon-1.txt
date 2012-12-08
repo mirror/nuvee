@@ -1,0 +1,223 @@
+; DEBUG
+; - 102a0-10730
+; - 11220-113d0
+; - 11410-11770
+; - 11DE0-12330 (Disc swap kit = 11DE0-12030)
+; - 12350-12490
+; - 124a0-125c0
+
+
+; shared mouse input (SLPS)
+
+org $000044e0
+
+j $800102b0
+nop
+
+
+
+; $102a0 = buttons
+; $102a4 = guncon x
+; $102a8 = guncon y
+; $102ac = unused temp
+
+
+
+; ra,s0,s1,t0,t2
+; ra,a0,t1,t7,t8,a1
+
+
+; check port2 controller
+lui ra,$8001
+ori ra,ra,$02a0
+
+lui a0,$8003
+ori a0,a0,$f948
+
+; =======================================
+; =======================================
+; =======================================
+
+; - ra = guncon target data
+; - a0 = guncon data
+
+; - t1 = temp
+; - t7 = guncon x
+; - t8 = guncon y
+
+
+REMAP_GUNCON:
+
+; check guncon ID first
+lbu t1,1(a0)
+ori t7,r0,$63
+bne t1,t7,DONE
+nop
+
+
+
+; remap guncon ID to mouse
+ori t1,r0,$12
+sb t1,1(a0)
+
+
+
+; force cursor data (guncon x-y)
+lh t7,4(a0)
+lh t8,6(a0)
+;nop
+
+; - no mouse motion
+sh r0,4(a0)
+
+
+
+
+; check valid latch data (1,10 = guncon offscreen normally)
+slti t1,t7,2
+beq t1,r0,REMAP_XY
+lui t1,0x3ff
+
+
+; offscreen shot - force (03ff.0000 = 16.16 fixed-format)
+sw t1,4(ra)
+beq r0,r0,REMAP_GUNCON_BUTTONS
+sw t1,8(ra)
+
+
+
+
+REMAP_XY:
+
+; x-axis
+
+; 255 guncon (pSX rough center) --> 160 justifier --> 0 center
+addi t7,t7,$ffa1
+addi t7,t7,$ff60
+
+
+
+; adjustment range (pSX 384 --> 320)
+; - 80 / 96 (384 * 128 / 320) ===> x * (64+16) / 96
+sll t1,t7,6
+sll t7,t7,4
+add t7,t7,t1
+
+lui t1,0x02aa
+ori t1,0xaaaa
+mult t7,t1
+mfhi t7
+
+; 0 center --> 158 justifier
+addi t7,t7,$9e
+
+sw t7,4(ra)
+
+
+
+; y-axis
+
+; 136 guncon (pSX rough center) --> 120 justifier --> 0 center
+addi t8,t8,$fff0
+;addi t8,t8,$ff88
+
+; no adjustment range (pSX 240 --> 240 range)
+;lui at,0x7800
+;ori at,0x0000
+;mult t1,at
+;mfhi t1
+
+; 0 center --> 120 justifier
+;addi t8,t8,$78
+
+sw t8,8(ra)
+
+
+
+
+REMAP_GUNCON_BUTTONS:
+
+; remap guncon --> mouse buttons (fcff)
+
+; $2000 = trigger  -->  $0800 = left
+; $0008 = A        -->  $0400 = right
+; $4000 = B        -->  $0400 = right
+
+lhu t7,2(a0)
+ori t8,r0,$fcff
+
+
+; flip bits
+xori t7,t7,$ffff
+
+
+
+; check trigger (low-assert)
+andi t1,t7,$2000
+beq t1,r0,REMAP_A
+nop
+
+; set $0800 bit
+andi t8,t8,$f7ff
+
+
+
+
+REMAP_A:
+; check aux
+andi t1,t7,$0008
+beq t1,r0,REMAP_B
+nop
+
+; set $0400 bit
+andi t8,t8,$fbff
+
+
+
+
+REMAP_B:
+; check start
+andi t1,t7,$4000
+beq t1,r0,REMAP_BUTTONS
+nop
+
+; set $0400 bit
+andi t8,t8,$fbff
+
+
+
+
+REMAP_BUTTONS:
+sh t8,0(ra)
+sh t8,2(a0)
+
+; ================================
+; ================================
+; ================================
+
+; verify port1 = mouse
+lui ra,$8003+1
+lbu t7,$f939(ra)
+ori a0,r0,$12
+bne t7,a0,DONE
+;nop
+
+
+; combine mouse1+guncon2 buttons now (avoid data caching problem)
+lbu t8,$f94b(ra)
+lbu t7,$f93b(ra)
+nop
+and t7,t7,t8
+sb t7,$f93b(ra)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+; OLD code
+lui t7,0
+lw t7,$74c4(t7)
+j $000049e8
+nop

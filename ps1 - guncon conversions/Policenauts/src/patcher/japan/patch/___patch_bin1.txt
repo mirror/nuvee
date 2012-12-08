@@ -1,0 +1,34 @@
+; ad8c -> 4bb90
+#40e04
+
+
+
+; gun code 1 - guncon data
+$48458
+0180053C0680013CA402A28CA802A88C0014020000440800582A22AC5C2A28ACA102A29000000000FFFF42380C0045300500A01001000234802A20AC842A20AC02000010552A22A0010011345322010800000000
+
+
+
+; gun code 1 - hide laser dot (normal)
+$4bb90
+ff03033c
+$4bb9c
+ff03023c
+
+
+
+; gun code 1 - hide laser dot (shot marker)
+$4be98
+ff03023c
+$4be9c
+140082ac
+$4bea4
+180082ac
+
+
+
+; gun code 1 - hide laser dot (reload)
+$4bfb8
+ff03023c
+$4bfc4
+ff03033c

@@ -1,0 +1,12 @@
+; bin.dpk
+
+; a12a0 -> 87188
+#-1A118
+
+
+
+; act1 - shooting range
+
+; gun code 2b - game #1 (guncon data)
+$87140
+0180023CA402438CA802488C001C03001C0003AE001C0800811C0208200003AE

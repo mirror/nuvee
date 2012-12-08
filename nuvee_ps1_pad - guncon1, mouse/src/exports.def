@@ -1,0 +1,31 @@
+LIBRARY      "nuvee_psx_controller"
+
+EXPORTS
+	PSEgetLibType
+	PSEgetLibName
+	PSEgetLibVersion
+
+	PS2EgetLibType
+	PS2EgetLibName
+	PS2EgetLibVersion2
+
+	PADinit
+	PADshutdown
+	PADopen
+	PADclose
+	PADstartPoll
+	PADpoll
+	PADreadPort1
+	PADreadPort2
+	PADquery
+	PADconfigure
+	PADtest
+	PADabout
+
+	PADregisterCursor
+	PADcmdline
+
+	PADkeyEvent
+	PADupdate
+	PADfreeze
+	PADsetSettingsDir

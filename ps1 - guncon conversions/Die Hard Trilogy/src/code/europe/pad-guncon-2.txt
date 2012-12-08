@@ -1,0 +1,96 @@
+; - 42a40-42e40 = remap buttons, id, cursor data
+
+
+
+org $80033384
+
+j $80042a40
+nop
+
+
+
+; get player address
+lui v1,$8001
+ori v1,v1,$2f00
+
+; ================================
+; ================================
+; ================================
+
+; v1,v0,at,ra
+; - v1 = guncon data
+; - ra = temp
+
+; remap guncon ID to justifier
+ori a1,r0,$31
+sb a1,1(v1)
+
+
+
+; force cursor data (guncon x-y)
+lh a1,4(v1)
+lh a3,6(v1)
+;nop
+
+
+
+; remap guncon --> justifier buttons
+
+; $2000 = trigger  -->  $8000 = trigger
+; $0008 = A        -->  $4000 = auxiliary
+; $4000 = B        -->  $0008 = start
+
+lhu v0,2(v1)
+ori at,r0,$ffff
+
+
+
+; check trigger (low-assert)
+andi ra,v0,$2000
+bne ra,r0,REMAP_A
+nop
+
+; set $8000 bit
+andi at,at,$7fff
+
+
+
+REMAP_A:
+; check aux
+andi ra,v0,$0008
+bne ra,r0,REMAP_B
+nop
+
+; set $4000 bit
+andi at,at,$bfff
+
+
+
+
+REMAP_B:
+; check start
+andi ra,v0,$4000
+bne ra,r0,REMAP_BUTTONS
+nop
+
+; lower $0008 bit
+andi at,at,$fff7
+
+
+
+REMAP_BUTTONS:
+sh at,2(v1)
+
+; ================================
+; ================================
+; ================================
+
+DONE:
+
+; OLD code
+lui v1,$8005
+lh v1,$57d8(v1)
+ori v0,r0,3
+
+j $80033390
+nop
