@@ -51,20 +51,19 @@ bool Guncon_Illegal_Command( int model )
 
 void PADpoll_guncon( int value )
 {
+	if(!MouseOver(hWnd_app)) goto poll;
+
 	int reload;
 
 	int data_x, data_y, data_z;
-	int data_buttons[3];
 	int data_absolute;
 
 	int gun_width, gun_height;
-	int gun_right, gun_bottom;
-
+	int gun_right, gun_bottom;	
 
 	if( pad_count == 0 ) {
-		reload = 0;
+		reload = 0;		
 		pad_cmd = value;
-
 
 		// guncon - average active window
 		GUNCON_WIDTH = guncon_width[ THIS_PAD ];
@@ -78,9 +77,9 @@ void PADpoll_guncon( int value )
 		data_y = device_y[ device_hid[ THIS_PAD ] ];
 		data_z = device_z[ device_hid[ THIS_PAD ] ];
 
-		data_buttons[0] = device_buttons[ device_hid[ THIS_PAD ] ][0];
-		data_buttons[1] = device_buttons[ device_hid[ THIS_PAD ] ][1];
-		data_buttons[2] = device_buttons[ device_hid[ THIS_PAD ] ][2];
+		for( int lcv = 0; lcv < NUM_MOUSE_BUTTONS; lcv++ ) {
+			guncon_buttons[ THIS_PAD ][ lcv ] = device_buttons[ device_hid[ THIS_PAD ] ][ lcv ];
+		}
 
 		data_absolute = device_absolute[ device_hid[ THIS_PAD ] ];
 
@@ -100,8 +99,7 @@ void PADpoll_guncon( int value )
 					guncon_analog_x[ THIS_PAD ], guncon_analog_y[ THIS_PAD ],
 					data_x, data_y );
 			}
-#endif
-
+#endif		
 
 		// relative mouse
 		if( data_absolute == 0 )
@@ -157,10 +155,10 @@ void PADpoll_guncon( int value )
 
 
 			// offscreen shots
-			if( guncon_analog_x[ THIS_PAD ] == 0 || 
+			if( (guncon_analog_x[ THIS_PAD ] == 0 || 
 					guncon_analog_y[ THIS_PAD ] == 0 || 
 					guncon_analog_x[ THIS_PAD ] == gun_right || 
-					guncon_analog_y[ THIS_PAD ] == gun_bottom )
+					guncon_analog_y[ THIS_PAD ] == gun_bottom) && offscreen_shot )
 			{
 				data_x = 0;
 				data_y = 0;
@@ -246,10 +244,10 @@ void PADpoll_guncon( int value )
 
 
 			// offscreen data
-			if( guncon_analog_x[ THIS_PAD ] == 0 || 
+			if( (guncon_analog_x[ THIS_PAD ] == 0 || 
 					guncon_analog_y[ THIS_PAD ] == 0 || 
 					guncon_analog_x[ THIS_PAD ] == 65535 || 
-					guncon_analog_y[ THIS_PAD ] == 65535 )
+					guncon_analog_y[ THIS_PAD ] == 65535) && offscreen_shot )
 			{
 				data_x = 0;
 				data_y = 0;
@@ -326,10 +324,11 @@ void PADpoll_guncon( int value )
 				if( data_x < 1 ) data_x = 1;
 				if( data_y < 1 ) data_y = 1;
 			}
-		}
+		}		
 
-
-
+		// save for later
+		current_analog_x[ THIS_PAD ] = data_x;
+		current_analog_y[ THIS_PAD ] = data_y;
 
 		// draw real-time lightgun cursor (true device position)
 		if( guncon_cursor[ THIS_PAD ] == GUNCON_SHOW_CURSOR ) {
@@ -352,9 +351,7 @@ void PADpoll_guncon( int value )
 					screen_x = (guncon_analog_x[ THIS_PAD ] * 512) / gun_width;
 					screen_y = (guncon_analog_y[ THIS_PAD ] * 256) / gun_height;
 				}
-			}
-
-
+			}			
 
 			// clip to GPU cursor coordinates
 			if( screen_x < 0 ) screen_x = 0;
@@ -377,10 +374,12 @@ void PADpoll_guncon( int value )
 				int w,h, x,y;
 				RECT r;
 
-
+				static int last_analog_x[512], last_analog_y[512];
 				// skip gun2 cursor if gun1 cursor on (+ mouse)
-				if( mouse_active == 2 && pad_active == 2 &&
-						guncon_cursor[0] == GUNCON_SHOW_CURSOR )
+				if( //mouse_active == 2 && pad_active == 2 &&
+						//guncon_cursor[0] == GUNCON_SHOW_CURSOR
+						current_analog_x[ THIS_PAD ] == last_analog_x[THIS_PAD] && current_analog_y[ THIS_PAD ] == last_analog_y[THIS_PAD]
+						)
 				{}
 				else {
 					// debug - force windows cursor
@@ -413,6 +412,8 @@ void PADpoll_guncon( int value )
 
 					SetCursorPos( x,y );
 				}
+				last_analog_x[THIS_PAD] = current_analog_x[ THIS_PAD ];
+				last_analog_y[THIS_PAD] = current_analog_y[ THIS_PAD ];
 			} // end gpu + win32
 		} // end cursor
 	} // pad_count
@@ -428,7 +429,13 @@ void PADpoll_guncon( int value )
 		fprintf( fp_cmd, "%X\n", pad_cmd );
 	}
 #endif
+	poll:
 
+	int data_buttons[3];
+
+	// restore from cache
+	data_x = current_analog_x[ THIS_PAD ];
+	data_y = current_analog_y[ THIS_PAD ];
 
 	switch( pad_cmd ) {
 		// $42 = poll data
@@ -464,7 +471,10 @@ void PADpoll_guncon( int value )
 			for( int lcv = 0; lcv < 3; lcv++ ) {
 				int mode;
 
-				if( data_buttons[lcv] == 0 ) continue;
+				// check not pushed
+				if( lcv < 5 ) {
+					if( guncon_buttons[ THIS_PAD ][lcv] == 0 ) continue;
+				}
 
 				if( lcv == 0 ) mode = guncon_left[ THIS_PAD ];
 				if( lcv == 1 ) mode = guncon_right[ THIS_PAD ];
@@ -515,8 +525,7 @@ void PADpoll_guncon( int value )
 
 			- 8 = perfect crosshair centering
 			*/
-
-
+			
 			// trigger down
 			if( (pad_out[3] & 0x20) == 0 )
 			{
@@ -665,7 +674,6 @@ void PADpoll_guncon( int value )
 				*((short *) (pad_out+6)) = 0;
 			}
 			break;
-
 
 
 		// ENTER_CONFIG_MODE

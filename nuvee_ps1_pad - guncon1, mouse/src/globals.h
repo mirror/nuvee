@@ -71,7 +71,7 @@ char temp_str[1024];
 
 int hidmouse_api;
 int snap_mouse_cursor = 1;
-
+int offscreen_shot = 1;
 
 
 // PCSX1 - two plugins = 1 shared dll
@@ -128,6 +128,8 @@ u8 pad_out[32+32];
 // ==================================
 // ==================================
 
+#define NUM_MOUSE_BUTTONS 5
+
 int gpu_screen_x, gpu_screen_y;
 
 
@@ -156,6 +158,8 @@ char mouse_name[512][2] = { 0,0 };
 
 
 int mouse_usb_converter[2];
+
+bool MouseOver(HWND hWnd_app);
 
 // ==================================
 // ==================================
@@ -233,6 +237,10 @@ int guncon_middle[2] = { GUNCON_B, GUNCON_B };
 
 int guncon_analog_x[2] = { 640 / 2, 640 / 2 };
 int guncon_analog_y[2] = { 480 / 2, 480 / 2 };
+int guncon_buttons[2][ NUM_MOUSE_BUTTONS ];
+
+int current_analog_x[2];
+int current_analog_y[2];
 
 int guncon_reload[2] = { GUNCON_RELOAD_MANUAL, GUNCON_RELOAD_MANUAL };
 int guncon_calibrate[2];

@@ -125,7 +125,7 @@ int raw_mouse_count(){
 static BOOL is_rm_rdp_mouse(char cDeviceString[])
 {
 	  int i;
-	  char cRDPString[] = "\\??\\Root#RDP_MOU#0000#";
+	  char cRDPString[] = "\\\\?\\Root#RDP_MOU#0000#";
 
 		//MessageBox( NULL, cDeviceString, NULL, MB_OK );
 

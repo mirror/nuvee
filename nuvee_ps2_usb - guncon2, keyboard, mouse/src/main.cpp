@@ -53,6 +53,17 @@ char *GetIniPath( char *str )
 	return temp_str;
 }
 
+bool MouseOver(HWND hWnd_app) {
+	POINT p;
+	GetCursorPos(&p);
+	ScreenToClient(hWnd_app, &p);
+	RECT r;
+	GetClientRect(hWnd_app, &r);
+	if(p.x >= 0 && p.y >= 0 && p.x <= r.right && p.y <= r.bottom)
+		return true;
+	else
+		return false;
+}
 
 void SnapCursor()
 {

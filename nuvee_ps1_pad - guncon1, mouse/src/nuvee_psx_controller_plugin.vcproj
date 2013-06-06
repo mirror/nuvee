@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="nuvee_psx_controller_plugin"
+	Version="9,00"
+	Name="nuvee_ps2_pad"
 	ProjectGUID="{83D357C2-A853-4C11-B804-6271089B1F31}"
+	RootNamespace="nuvee_psx_controller_plugin"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -73,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="nuvee_psx_controller.dll"
+				OutputFile="nuvee_ps2_pad.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\exports.def"

@@ -19,7 +19,7 @@ void LoadConfig_Main()
 		fscanf( fp, "Debug = %d\n", &usb_logging );
 		fscanf( fp, "Swap lightguns = %d\n", &lightgun_swap );
 		fscanf( fp, "Snap mouse = %d\n", &snap_mouse_cursor );
-
+		fscanf( fp, "Offscreen shot = %d\n", &offscreen_shot );
 
 		fclose( fp );
 	}
@@ -40,6 +40,7 @@ void SaveConfig_Main()
 		fprintf( fp, "Debug = %d\n", usb_logging );
 		fprintf( fp, "Swap lightguns = %d\n", lightgun_swap );
 		fprintf( fp, "Snap mouse = %d\n", snap_mouse_cursor );
+		fprintf( fp, "Offscreen shot = %d\n", offscreen_shot );
 
 		fclose( fp );
 	}
@@ -68,6 +69,10 @@ void GetConfig_Main( HWND hWnd )
 	if( IsDlgButtonChecked( hWnd,IDC_MAIN_SWAP_GUNS ) )
 		lightgun_swap = 1;
 
+
+	offscreen_shot = 1;
+	if( IsDlgButtonChecked( hWnd,IDC_MAIN_OFFSCREEN ) )
+		offscreen_shot = 0;
 
 
 	hWC = GetDlgItem( hWnd,IDC_MAIN_HIDMOUSE_API );
@@ -214,6 +219,8 @@ BOOL CALLBACK MainDlgProc( const HWND hWnd, const UINT msg, const WPARAM wParam,
 			USB_ResetRoothub(1);
 			return TRUE;
 
+		case IDC_MAIN_OFFSCREEN:
+			return TRUE;
 
 		case IDC_MAIN_HELP_HIDMOUSE_API:
 			MessageBox( NULL,

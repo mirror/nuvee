@@ -125,7 +125,7 @@ int raw_mouse_count(){
 static BOOL is_rm_rdp_mouse(char cDeviceString[])
 {
 	  int i;
-	  char cRDPString[] = "\\??\\Root#RDP_MOU#0000#";
+	  char cRDPString[] = "\\\\?\\Root#RDP_MOU#0000#";
 
 		//MessageBox( NULL, cDeviceString, NULL, MB_OK );
 
@@ -348,6 +348,7 @@ BOOL register_raw_mouse( HWND hwnd )
 	  Rid[0].usUsage = 0x02; 
 	  Rid[0].dwFlags = 0;// RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
 	  Rid[0].hwndTarget = hwnd ;
+
 
 	  // Register to receive the WM_INPUT message for any change in mouse (buttons, wheel, and movement will all generate the same message)
 		if (!/* RegisterRawInputDevices*/ (*_RRID)(Rid, 1, sizeof (Rid[0])))

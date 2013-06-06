@@ -1,3 +1,16 @@
+bool MouseOver(HWND hWnd_app) {
+	if(hWnd_app != GetForegroundWindow()) return false;
+	POINT p;
+	GetCursorPos(&p);
+	ScreenToClient(hWnd_app, &p);
+	RECT r;
+	GetClientRect(hWnd_app, &r);
+	if(p.x >= 0 && p.y >= 0 && p.x <= r.right && p.y <= r.bottom)
+		return true;
+	else
+		return false;
+}
+
 void PADpoll_mouse( int value )
 {
 	int data_x, data_y, data_z;
